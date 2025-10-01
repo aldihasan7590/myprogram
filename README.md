@@ -9,4 +9,4 @@ A minimal Pomodoro timer built with pure HTML, CSS, and JavaScript.
 - Alert when the session ends
 
 ## Run
-Open `html-pomodoro.html` in your browser.
+Open `index.html` in your browser.
