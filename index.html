@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pomodoro Timer</title>
+<style>
+  :root{--bg:#0b1220;--fg:#e6eef8;--muted:#9bb0c9;--accent:#1d74e4}
+  body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 system-ui;display:grid;place-items:center;min-height:100vh}
+  .card{background:#121a2b;border:1px solid #1e2a44;border-radius:16px;padding:24px;max-width:420px;width:92%}
+  h1{margin:0 0 .4rem}
+  .time{font-size:3rem;letter-spacing:.08em;margin:.6rem 0 1rem}
+  .row{display:flex;gap:8px;flex-wrap:wrap}
+  button,input{font:inherit;border:1px solid #2a3c63;border-radius:12px;padding:.6rem .9rem;background:#18243e;color:var(--fg)}
+  button.primary{background:var(--accent);color:#fff}
+  small{color:var(--muted)}
+</style>
+</head>
+<body>
+  <div class="card">
+    <h1>Pomodoro</h1>
+    <div class="time" id="time">25:00</div>
+    <div class="row">
+      <button class="primary" id="start">Start</button>
+      <button id="pause">Pause</button>
+      <button id="reset">Reset</button>
+      <input id="mins" type="number" min="1" value="25" title="Minutes">
+      <small>Set minutes then Reset</small>
+    </div>
+    <p><small>Work 25, break 5. Repeat 4 times, then a longer break.</small></p>
+  </div>
+<script>
+  let total = 25*60, left = total, t=null, running=false;
+  const el = id=>document.getElementById(id);
+  const fmt = s=>`${Math.floor(s/60)}`.padStart(2,'0')+":"+`${s%60}`.padStart(2,'0');
+  const render = ()=>el('time').textContent = fmt(left);
+  const tick = ()=>{ if(left>0){ left--; render(); } else { clearInterval(t); running=false; alert("Time's up!"); } };
+  el('start').onclick=()=>{ if(!running){ t=setInterval(tick,1000); running=true; } };
+  el('pause').onclick=()=>{ clearInterval(t); running=false; };
+  el('reset').onclick=()=>{ clearInterval(t); running=false; total = Math.max(1,parseInt(el('mins').value||25))*60; left=total; render(); };
+  render();
+</script>
+</body>
+</html>
